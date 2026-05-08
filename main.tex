@@ -54,11 +54,21 @@
 \usepackage{calc}
 \usepackage{enumitem}
 \usepackage{caption}
-% Formato APA 7 para figuras: número en negrita, título en cursiva y nota de procedencia.
-% Según APA 7/UPC, la nota debe precisar si la figura es de elaboración propia,
+\usepackage{chngcntr}
+% Numeración consecutiva APA: Figura 1, Figura 2, Tabla 1, Tabla 2,
+% sin anteponer el número del capítulo.
+\counterwithout{figure}{chapter}
+\counterwithout{table}{chapter}
+\renewcommand{\thefigure}{\arabic{figure}}
+\renewcommand{\thetable}{\arabic{table}}
+
+% Formato APA 7 para tablas y figuras:
+% número en negrita, título en cursiva en la línea siguiente y nota debajo.
+% Según APA 7/UPC, la nota debe precisar si la tabla/figura es de elaboración propia,
 % tomada o adaptada de una fuente externa.
 \captionsetup{font=normalsize,labelfont=bf,labelsep=period}
 \captionsetup[figure]{font=normalsize,labelfont=bf,textfont=it,labelsep=newline,justification=raggedright,singlelinecheck=false,skip=0.35em}
+\captionsetup[table]{position=above,font=normalsize,labelfont=bf,textfont=it,labelsep=newline,justification=raggedright,singlelinecheck=false,skip=0.35em}
 \renewcommand{\figurename}{Figura}
 \renewcommand{\tablename}{Tabla}
 % Nombres solicitados para índices preliminares
@@ -151,6 +161,11 @@
   \singlespacing\normalsize\textit{Nota.} #1%
   \end{minipage}\par%
 }
+
+% Nota APA para tablas. En tablas creadas con booktabs/longtable puede usarse
+% debajo de \bottomrule como una fila multicolumna adaptada al número de columnas.
+% Ejemplo: \multicolumn{3}{p{0.94\textwidth}}{\tablenote{Elaboración propia.}}\\
+\newcommand{\tablenote}[1]{\singlespacing\normalsize\textit{Nota.} #1}
 
 
 \begin{document}
