@@ -1,0 +1,43 @@
+# LaTeX build artifacts
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.lof
+*.log
+*.lot
+*.out
+*.run.xml
+*.synctex.gz
+*.toc
+*.xdv
+*.nav
+*.snm
+*.vrb
+*.fls
+*.fmt
+*.fot
+*.cb
+*.cb2
+*.lb
+*.dvi
+*.ps
+
+# Temporary files
+*.tmp
+*.temp
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Optional: generated PDF
+# Uncomment if you DON'T want PDFs in git
+*.pdf
+*.docx
