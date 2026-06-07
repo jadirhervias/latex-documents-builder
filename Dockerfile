@@ -36,4 +36,4 @@ WORKDIR /workspace
 
 # PROJECT
 # Default keeps docker run usable even without Makefile arguments.
-CMD ["bash", "-lc", "PROJECT=${PROJECT:-pyme-farmacia}; if [ ! -f \"$PROJECT/main.tex\" ]; then echo \"ERROR: $PROJECT/main.tex not found. Use PROJECT=pyme-comercio or PROJECT=pyme-farmacia.\"; exit 1; fi; cd \"$PROJECT\" && if [ -f ../scripts/normalize_figures.sh ]; then bash ../scripts/normalize_figures.sh .; fi && xelatex -interaction=nonstopmode -halt-on-error main.tex && biber main && xelatex -interaction=nonstopmode -halt-on-error main.tex && xelatex -interaction=nonstopmode -halt-on-error main.tex"]
+CMD ["bash", "-lc", "PROJECT=${PROJECT:-pyme-farmacia}; if [ ! -f \"$PROJECT/main.tex\" ]; then echo \"ERROR: $PROJECT/main.tex not found.\"; exit 1; fi; cd \"$PROJECT\" && if [ -f ../scripts/normalize_figures.sh ]; then bash ../scripts/normalize_figures.sh .; fi && xelatex -interaction=nonstopmode -halt-on-error main.tex && biber main && xelatex -interaction=nonstopmode -halt-on-error main.tex && xelatex -interaction=nonstopmode -halt-on-error main.tex"]
