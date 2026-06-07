@@ -4,9 +4,9 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 # Do not use texlive-full here: it is several GB and often fails in Docker
 # Desktop with "not enough free space in /var/cache/apt/archives".
-# This targeted set covers the packages used by main.tex:
+# This targeted set covers the packages used by both thesis versions:
 # fontspec/xelatex, babel Spanish, biblatex-apa+biber, newtxmath,
-# tables/figures/captions/hyperlinks, and the image normalizer.
+# tables/figures/captions/hyperlinks, diagrams/images, and the image normalizer.
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates \
     biber \
@@ -34,4 +34,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 WORKDIR /workspace
 
-CMD ["bash", "-lc", "if [ -f scripts/normalize_figures.sh ]; then bash scripts/normalize_figures.sh; fi && xelatex -interaction=nonstopmode main.tex && biber main && xelatex -interaction=nonstopmode main.tex && xelatex -interaction=nonstopmode main.tex"]
+# PROJECT
+# Default keeps docker run usable even without Makefile arguments.
+CMD ["bash", "-lc", "PROJECT=${PROJECT:-pyme-farmacia}; if [ ! -f \"$PROJECT/main.tex\" ]; then echo \"ERROR: $PROJECT/main.tex not found. Use PROJECT=pyme-comercio or PROJECT=pyme-farmacia.\"; exit 1; fi; cd \"$PROJECT\" && if [ -f ../scripts/normalize_figures.sh ]; then bash ../scripts/normalize_figures.sh .; fi && xelatex -interaction=nonstopmode -halt-on-error main.tex && biber main && xelatex -interaction=nonstopmode -halt-on-error main.tex && xelatex -interaction=nonstopmode -halt-on-error main.tex"]

@@ -37,7 +37,6 @@ Thumbs.db
 .vscode/
 .idea/
 
-# Optional: generated PDF
-# Uncomment if you DON'T want PDFs in git
+# Generated deliverables
 *.pdf
 *.docx

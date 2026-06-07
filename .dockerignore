@@ -12,5 +12,7 @@
 *.synctex.gz
 *.fls
 *.fdb_latexmk
-main.pdf
+*.xdv
+*.pdf
+*.docx
 _renders*/
