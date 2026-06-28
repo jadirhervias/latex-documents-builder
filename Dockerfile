@@ -34,6 +34,5 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 WORKDIR /workspace
 
-# PROJECT
-# Default keeps docker run usable even without Makefile arguments.
-CMD ["bash", "-lc", "PROJECT=${PROJECT:-pyme-farmacia}; if [ ! -f \"$PROJECT/main.tex\" ]; then echo \"ERROR: $PROJECT/main.tex not found.\"; exit 1; fi; cd \"$PROJECT\" && if [ -f ../scripts/normalize_figures.sh ]; then bash ../scripts/normalize_figures.sh .; fi && xelatex -interaction=nonstopmode -halt-on-error main.tex && biber main && xelatex -interaction=nonstopmode -halt-on-error main.tex && xelatex -interaction=nonstopmode -halt-on-error main.tex"]
+# PROJECT apunta a la subcarpeta dentro de workspaces ahora
+CMD ["bash", "-lc", "PROJECT=${PROJECT:-pyme-farmacia}; if [ ! -f \"workspaces/$PROJECT/main.tex\" ]; then echo \"ERROR: workspaces/$PROJECT/main.tex not found.\"; exit 1; fi; cd \"workspaces/$PROJECT\" && if [ -f ../scripts/normalize_figures.sh ]; then bash ../scripts/normalize_figures.sh .; fi && xelatex -interaction=nonstopmode -halt-on-error main.tex && biber main && xelatex -interaction=nonstopmode -halt-on-error main.tex && xelatex -interaction=nonstopmode -halt-on-error main.tex"]

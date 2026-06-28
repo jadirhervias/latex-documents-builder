@@ -16,3 +16,4 @@
 *.pdf
 *.docx
 _renders*/
+**/.normalize_cache.txt

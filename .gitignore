@@ -40,3 +40,8 @@ Thumbs.db
 # Generated deliverables
 *.pdf
 *.docx
+
+backups/
+
+# Ignorar el archivo de caché del normalizador de imágenes
+**/.normalize_cache.txt

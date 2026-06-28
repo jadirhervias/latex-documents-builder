@@ -1,0 +1,13 @@
+services:
+  latex-env:
+    container_name: latex-workspace-builder
+    image: latex-builder:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/workspace
+    environment:
+      - PROJECT=${PROJECT:-pyme-farmacia}
+    # Esto sobrescribe el CMD del Dockerfile para mantener el contenedor vivo permanentemente
+    command: sleep infinity

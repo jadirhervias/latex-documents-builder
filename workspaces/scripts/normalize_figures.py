@@ -9,14 +9,49 @@ Usage examples:
 
 The script keeps the original filenames referenced by main.tex. It only rewrites
 supported image files in a LaTeX-friendly format when Pillow can open them.
+It uses a local cache file (.normalize_cache.txt) to avoid re-processing unmodified files.
 """
 from __future__ import annotations
 
 import sys
+import hashlib
 from pathlib import Path
 from PIL import Image, ImageOps, UnidentifiedImageError
 
 SUPPORTED = {".png", ".jpg", ".jpeg"}
+CACHE_FILE_NAME = ".normalize_cache.txt"
+
+
+def get_file_hash(path: Path) -> str:
+    """Calculate SHA-256 hash of a file to check for changes."""
+    hasher = hashlib.sha256()
+    with open(path, "rb") as f:
+        for chunk in iter(lambda: f.read(65536), b""):
+            hasher.update(chunk)
+    return hasher.hexdigest()
+
+
+def load_cache(fig_dir: Path) -> set[str]:
+    """Load existing hashes from the cache file."""
+    cache_path = fig_dir / CACHE_FILE_NAME
+    if not cache_path.is_file():
+        return set()
+    try:
+        with open(cache_path, "r", encoding="utf-8") as f:
+            return {line.strip() for line in f if line.strip()}
+    except OSError:
+        return set()
+
+
+def save_cache(fig_dir: Path, hashes: set[str]) -> None:
+    """Save all processed hashes back to the cache file."""
+    cache_path = fig_dir / CACHE_FILE_NAME
+    try:
+        with open(cache_path, "w", encoding="utf-8") as f:
+            for h in sorted(hashes):
+                f.write(f"{h}\n")
+    except OSError as exc:
+        print(f"[warn] Could not save cache to {cache_path}: {exc}", file=sys.stderr)
 
 
 def figure_dirs(target: Path) -> list[Path]:
@@ -73,17 +108,45 @@ def normalize_image(path: Path) -> bool:
 def main(argv: list[str]) -> int:
     targets = [Path(arg) for arg in argv] if argv else [Path(".")]
     normalized = 0
+    skipped = 0
     dirs: list[Path] = []
+    
     for target in targets:
         dirs.extend(figure_dirs(target))
+        
     if not dirs:
         print("[info] No figuras directory found.")
         return 0
+        
     for fig_dir in dirs:
+        cache = load_cache(fig_dir)
+        new_cache = set()
+        
         for path in sorted(fig_dir.rglob("*")):
-            if path.is_file() and normalize_image(path):
-                normalized += 1
-    print(f"[info] Normalized {normalized} figure file(s).")
+            if path.is_file() and path.name != CACHE_FILE_NAME:
+                suffix = path.suffix.lower()
+                if suffix not in SUPPORTED:
+                    continue
+                    
+                # Calculate initial hash before doing anything
+                file_hash = get_file_hash(path)
+                
+                if file_hash in cache:
+                    # Already normalized in a previous run
+                    new_cache.add(file_hash)
+                    skipped += 1
+                    continue
+                
+                if normalize_image(path):
+                    normalized += 1
+                    # Re-calculate hash since the file was rewritten and changed
+                    new_hash = get_file_hash(path)
+                    new_cache.add(new_hash)
+                    
+        # Update cache file for this folder
+        save_cache(fig_dir, new_cache)
+        
+    print(f"[info] Normalized {normalized} figure file(s), skipped {skipped} already optimized file(s).")
     return 0
 
 
