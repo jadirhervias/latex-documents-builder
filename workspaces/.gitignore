@@ -1,0 +1,31 @@
+# Archivos temporales y de compilación de LaTeX en cualquier nivel de carpetas
+**/*.aux
+**/*.bbl
+**/*.bcf
+**/*.blg
+**/*.fdb_latexmk
+**/*.fls
+**/*.lof
+**/*.log
+**/*.lot
+**/*.out
+**/*.run.xml
+**/*.synctex.gz
+**/*.toc
+**/*.xdv
+**/*.nav
+**/*.snm
+**/*.vrb
+**/*.fls
+**/*.fmt
+**/*.fot
+**/*.cb
+**/*.cb2
+**/*.lb
+**/*.dvi
+**/*.ps
+
+# Archivos de salida generados (para que la imagen buildee limpia)
+**/*.pdf
+**/*.docx
+_renders*/
