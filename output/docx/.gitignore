@@ -1,0 +1,3 @@
+# Ignore generated Word documents; keep this output directory and policy file.
+*
+!.gitignore

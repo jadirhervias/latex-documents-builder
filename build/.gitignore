@@ -1,0 +1,3 @@
+# Ignore every generated build artifact; keep this policy file.
+*
+!.gitignore

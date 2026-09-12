@@ -1,0 +1,17 @@
+# The global Git configuration ignores build/. Re-include the directory so its
+# local .gitignore can define the generated-content policy.
+!build/
+
+# Local font staging (proprietary fonts must never be committed)
+.fonts/*
+!.fonts/README.md
+
+# Python bytecode caches
+**/__pycache__/
+
+# Editor and operating-system files
+.DS_Store
+*.swp
+*.swo
+
+tmp/
